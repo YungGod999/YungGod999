@@ -21,3 +21,13 @@ void ForEach3It(Iterator1 first1, Iterator1 last1
 	for(; first1!=last1; ++first1, ++first2, ++first3)
 		functor(*first1, *first2, *first3);
 }
+
+template<class Iterator, class Functor>
+void ForEachPair(Iterator first, Iterator last, Functor functor)
+{
+	if(first!=last)
+	{
+		for(Iterator next=first+1; next!=last; ++next, ++first)
+			functor(*first, *next);
+	}
+}

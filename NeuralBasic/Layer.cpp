@@ -20,7 +20,7 @@ void Layer::Init()
 {
 	m_output.resize(m_neurons.size()+BIAS_INPUT);//+1 bias
 	m_output.back() = BIAS_VALUE;//bias value
-	m_error.resize(GetInputsCount()-BIAS_INPUT);//bias is not back propagated
+	m_error.resize(GetInputCount()-BIAS_INPUT);//bias is not back propagated
 }
 
 Layer::~Layer(void)
@@ -37,7 +37,7 @@ const Doubles& Layer::GetOutput() const
 void Layer::Work(const Doubles& m_inputs)
 {
 	assert(m_neurons.size()+BIAS_INPUT==m_output.size());
-	assert(m_inputs.size() == GetInputsCount());
+	assert(m_inputs.size() == GetInputCount());
 	std::transform(m_neurons.begin(), m_neurons.end(),
 		m_output.begin(), 
 		[&m_inputs](const Neuron& neuron)
@@ -84,7 +84,7 @@ const Doubles& Layer::GetError() const
 	return m_error;
 }
 
-size_t Layer::GetInputsCount() const
+size_t Layer::GetInputCount() const
 {
 	const size_t inputsCount = m_neurons.front().GetInputsCount();
 	return inputsCount;

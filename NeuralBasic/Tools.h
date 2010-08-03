@@ -31,3 +31,17 @@ void ForEachPair(Iterator first, Iterator last, Functor functor)
 			functor(*first, *next);
 	}
 }
+
+template<class Iterator, class Functor>
+void ForEachTrio(Iterator first, Iterator last, Functor functor)
+{
+	if(first!=last)
+	{
+		Iterator second = first+1;
+		if(second!=last)
+		{
+			for(Iterator third=second+1; third!=last; ++first, ++second, ++third)
+				functor(*first, *second, *third);
+		}
+	}
+}

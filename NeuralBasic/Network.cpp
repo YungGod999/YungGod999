@@ -53,34 +53,34 @@ const Doubles& Network::Work(const Doubles& input)
 
 }
 
+//back propagate from ouput to input layer
 void Network::Train(const Doubles& input, const Doubles& error)
 {
 	assert(!m_layers.empty());
-	const Layers::reverse_iterator rBegin = m_layers.rbegin();
-	//first layer is calculated different way then others
-	const Layers::reverse_iterator rEnd = m_layers.rend()-1;
-
-	for(Layers::reverse_iterator it = rBegin; 
-		it!=rEnd; ++it)
+	if(m_layers.size()>2)
 	{
-		const Doubles& layerInput = GetInputR(it);
-		const Doubles& layerError = GetError(it, rBegin, error);
-
-		(*it).Train(layerInput, layerError);
+		m_layers.back().Train((m_layers.end()-2)->GetOutput(), error);
+		//back propagate from ouput to input layer
+		ForEachTrio(m_layers.rbegin(), m_layers.rend()
+			, [](Layer& first, Layer& second, Layer& third)
+		{
+			second.Train(third.GetOutput(), first.GetError());
+		}
+		);
+		m_layers.front().TrainFirstLayer(input, (m_layers.begin()+1)->GetError());
 	}
-
-	//first layer do not propagate error
-	//first layer is learnt without error calculation - optimization
-	//first layer input == network input
-	m_layers.front().TrainFirstLayer(input, GetError(rEnd, rBegin, error));
-}
-
-size_t Network::GetOutputCount() const
-{
-	if(!m_layers.empty())
-		return m_layers.back().GetOutput().size();
-
-	return 0;
+	else if(m_layers.size()==2)
+	{
+		m_layers.back().Train(m_layers.front().GetOutput(), error);
+		m_layers.front().TrainFirstLayer(input, m_layers.back().GetError());
+	}
+	else if(m_layers.size()==1)
+	{
+		//first layer do not propagate error to prev layer
+		//first layer is learnt without error calculation - optimization
+		//first layer input == network input
+		m_layers.front().TrainFirstLayer(input, error);
+	}
 }
 
 size_t Network::GetInputCount() const

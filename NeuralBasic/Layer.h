@@ -10,16 +10,15 @@ public:
 
 	~Layer(void);
 
-	void Layer::Work(const Doubles& m_inputs);
+	void Work(const Doubles& m_inputs);
 	void Train(const Doubles& inputs, const Doubles& error);
 	void TrainFirstLayer(const Doubles& inputs, const Doubles& error);
 
 	const Doubles& GetOutput() const;
 	const Doubles& GetError() const;
-
+	size_t GetInputCount() const;
 private:
 	void Init();
-	size_t Layer::GetInputsCount() const;
 
 	typedef std::vector<Neuron> Neurons;
 	Neurons m_neurons;

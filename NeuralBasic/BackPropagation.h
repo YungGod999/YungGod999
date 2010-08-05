@@ -1,9 +1,11 @@
 #pragma once
 
-class  BackPropagation
+namespace NeuralBasic
 {
-public:
-	static void Train(const double learningError, const Doubles& inputs, Doubles& weights);
-};
-
+	class  BackPropagation
+	{
+	public:
+		static void Train(const double learningError, const Doubles& inputs, Doubles& weights);
+	};
+}
 

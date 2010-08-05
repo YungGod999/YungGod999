@@ -1,2 +1,7 @@
 #pragma once
-typedef std::vector<double> Doubles;
+namespace NeuralBasic
+{
+
+	typedef std::vector<double> Doubles;
+
+}

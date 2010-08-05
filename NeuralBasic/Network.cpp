@@ -2,7 +2,8 @@
 #include "Network.h"
 #include "Tools.h"
 
-
+namespace NeuralBasic
+{
 Network::Network(void)
 {
 }
@@ -88,3 +89,4 @@ size_t Network::GetInputCount() const
 	return m_layers.front().GetInputCount();
 }
 
+}

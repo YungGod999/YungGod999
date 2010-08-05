@@ -1,9 +1,13 @@
 #pragma once
-class HyperbolicTangent
+
+namespace NeuralBasic
 {
-public:
-	static double Output(const double netValue);
-	static double Derivative(const double neuronOutput);
-};
+	class HyperbolicTangent
+	{
+	public:
+		static double Output(const double netValue);
+		static double Derivative(const double neuronOutput);
+	};
 
 
+}

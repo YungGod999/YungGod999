@@ -1,7 +1,10 @@
 #pragma once
-class WeightInitializer
-{
-public:
-	static double Generate();
-};
 
+namespace NeuralBasic
+{
+	class WeightInitializer
+	{
+	public:
+		static double Generate();
+	};
+}

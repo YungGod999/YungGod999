@@ -37,7 +37,7 @@ Network::~Network(void)
 
 const Doubles& Network::Work(const Doubles& input)
 {
-	assert(input.size() == BIAS_INPUT+GetInputCount());
+	assert(input.size() == GetInputCount());
 	assert(input.back() == BIAS_VALUE );
 	assert(!m_layers.empty());
 

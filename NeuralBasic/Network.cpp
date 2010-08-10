@@ -86,7 +86,9 @@ void Network::Train(const Doubles& input, const Doubles& error)
 
 size_t Network::GetInputCount() const
 {
-	return m_layers.front().GetInputCount();
+	if(!m_layers.empty())
+		return m_layers.front().GetInputCount();
+	return 0;
 }
 
 }

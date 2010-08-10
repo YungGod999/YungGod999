@@ -25,8 +25,8 @@ namespace NeuralBasic
 
 		const std::vector<double>& Work(const Doubles& input);
 		void Train(const Doubles& input, const Doubles& error);
-	private:
 		size_t GetInputCount() const;
+	private:
 
 #pragma warning( push )
 #pragma warning( disable : 4251 )

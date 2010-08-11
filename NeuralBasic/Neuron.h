@@ -2,10 +2,23 @@
 
 #include "Defines.h"
 
+namespace boost
+{
+	namespace serialization
+	{
+		class access;
+	}
+}
 namespace NeuralBasic
 {
 	class Neuron
 	{
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int /*version*/)
+		{
+			ar & BOOST_SERIALIZATION_NVP(m_weights);
+		}
 	public:
 		Neuron(void);
 		explicit Neuron(const size_t inputsCount);

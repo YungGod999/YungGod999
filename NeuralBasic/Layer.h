@@ -6,6 +6,14 @@ namespace NeuralBasic
 {
 	class Layer
 	{
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int /*version*/)
+		{
+			ar & BOOST_SERIALIZATION_NVP(m_neurons);
+
+			Init();
+		}
 	public:
 		Layer(void);
 		Layer(const size_t inputsCount, const size_t neuronsCount);

@@ -13,3 +13,7 @@
 
 
 // TODO: reference additional headers your program requires here
+#include <algorithm>
+#include <iterator>
+#include <iostream>
+#include "..\NeuralBasic\Network.h"

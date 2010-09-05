@@ -164,6 +164,8 @@ int _tmain(int /*argc*/, _TCHAR* /*argv*/[])
 	TrainNetwork(network);
 	TestNetwork(network);
 
+	std::cout << "Press <Enter> key to continue...";
+	std::cin.ignore();
 	return 0;
 }
 

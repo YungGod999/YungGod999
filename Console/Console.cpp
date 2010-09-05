@@ -7,8 +7,8 @@ NeuralBasic::Network CreateNetwork()
 {
 	std::vector<size_t> networkSize;
 	networkSize.push_back(4);//inputs count
-	networkSize.push_back(6);//neurons count in layer 1
-	networkSize.push_back(6);//neurons count in layer 2 and and outputs count
+	networkSize.push_back(8);//neurons count in layer 1
+	networkSize.push_back(4);//neurons count in layer 2 and and outputs count
 	NeuralBasic::Network network(networkSize);
 	return network;
 }
@@ -16,7 +16,9 @@ NeuralBasic::Network CreateNetwork()
 class Data
 {
 public:
-	Data()
+	Data(const std::vector<double>& input, const std::vector<double>& desired)
+		: m_input(input)
+		, m_desired(desired)
 	{
 	}
 
@@ -30,25 +32,74 @@ public:
 		return m_desired;
 	}
 
-	bool IsRecognized(const std::vector<double>& /*networkOutput*/) const
+	bool IsRecognized(const std::vector<double>& networkOutput) const
 	{
-		return true;
+		std::vector<double> errors;
+		return std::equal(m_desired.begin(), m_desired.end()
+			, networkOutput.begin()
+			, 
+			[](double desired, double output)->bool
+		{
+			//IsErrorSmallerThen
+			if(abs(desired-output)<0.3)
+				return true;
+			return false;
+		}
+		);
 	}
 private:
 	std::vector<double> m_input;
 	std::vector<double> m_desired;
 };
 
-std::vector<Data> GetTrainData()
-{
-	std::vector<Data> data;
+const double input1[]={-0.8, -0.7, 0.7, 0.8, 1.0};
+const double desired1[]={0.8, -0.8, 0.88, -0.85};
+const double input2[]={0.8, 0.7, -0.8, -0.9, 1.0};
+const double desired2[]={-0.8, 0.8, -0.85, 0.83};
+const double input3[]={0.1, -0.1, 0.12, -0.13, 1.0};
+const double desired3[]={0.1, -0.1, 0.13, -0.14};
+const double input4[]={0.9, 0.8, 0.1, -0.9, 1.0};
+const double desired4[]={-0.9, 0.7, -0.91, 0.73};
+const double input5[]={0.9, 0.8, 0.1, -0.9, 1.0};
+const double desired5[]={-0.9, 0.7, -0.91, 0.73};
 
+const double inputs[][5]={
+	{-0.8, -0.7, 0.7, 0.8, 1.0}
+	, {0.8, 0.7, -0.8, -0.9, 1.0}
+	, {0.1, -0.1, 0.12, -0.13, 1.0}
+	, {0.9, 0.8, 0.1, -0.9, 1.0}
+	, {0.9, 0.8, 0.1, -0.9, 1.0}
+};
+
+const double desireds[][4]={
+	{0.8, -0.8, 0.88, -0.85}
+	, {-0.8, 0.8, -0.85, 0.83}
+	, {0.1, -0.1, 0.13, -0.14}
+	, {-0.9, 0.7, -0.91, 0.73}
+	, {-0.9, 0.7, -0.91, 0.73}
+};
+
+Data CreateData(const size_t index)
+{
+	Data data(std::vector<double>(inputs[index], inputs[index]+5)
+		, std::vector<double>(desireds[index], desireds[index]+4));
 	return data;
 }
 
 std::vector<Data> GetTestData()
 {
 	std::vector<Data> data;
+	for(size_t idx=0; idx<5; ++idx)
+		data.push_back(CreateData(idx));
+
+	return data;
+}
+
+std::vector<Data> GetTrainData()
+{
+	std::vector<Data> data;
+	for(size_t idx=0; idx<5; ++idx)
+		data.push_back(CreateData(idx));
 
 	return data;
 }

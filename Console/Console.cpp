@@ -22,12 +22,12 @@ public:
 	{
 	}
 
-	std::vector<double> GetInput() const
+	const std::vector<double>& GetInput() const
 	{
 		return m_input;
 	}
 
-	std::vector<double> GetDesired() const
+	const std::vector<double>& GetDesired() const
 	{
 		return m_desired;
 	}
@@ -104,16 +104,29 @@ std::vector<Data> GetTrainData()
 	return data;
 }
 
+double GetMaxAbs(const std::vector<double>& errors)
+{
+	double result = 0;
+	std::for_each(errors.begin(), errors.end()
+		, [&result](const double error)
+	{
+		result = std::max(result, abs(error));
+	}
+	);
+	return result;
+}
+
 void TrainNetwork(NeuralBasic::Network& network)
 {
 	std::cout << "Training neural network..." << std::endl;
-	const std::vector<Data>& data = GetTrainData();
+	const std::vector<Data>& trainData = GetTrainData();
 
-	const size_t trainRoundCount = 100;
+	const size_t trainRoundCount = 1000;
 	for(size_t idx=0; idx<trainRoundCount; ++idx)
 	{
-		std::for_each(data.begin(), data.end() 
-			, [&network](const Data& data)
+		double roundError = 0;
+		std::for_each(trainData.begin(), trainData.end() 
+			, [&network, &roundError](const Data& data)
 		{
 			const std::vector<double>& output = network.Work(data.GetInput());
 			std::vector<double> error;
@@ -123,8 +136,10 @@ void TrainNetwork(NeuralBasic::Network& network)
 				, std::back_inserter(error)
 				, std::minus<double>());
 			network.Train(data.GetInput(), error);
+			roundError = std::max(roundError, GetMaxAbs(error));
 		}
 		);
+		std::cout << "Round error: " << roundError << std::endl;
 	}
 }
 

@@ -14,16 +14,12 @@ namespace NeuralBasic
 	Neuron::Neuron(const size_t inputsCount)
 		: m_weights(inputsCount)
 	{
-		double j = 0.0;
 		std::generate(m_weights.begin(), m_weights.end(), 
-			[&j]()->double
+			[]()
 		{
-			j+=0.125;
-			return j;
-			//return WeightInitializer::Generate();
+			return WeightInitializer::Generate();
 		}
 		);
-		m_weights.back() = 0.1;
 		backPropagation.init(m_weights.size());
 	}
 

@@ -7,7 +7,7 @@ NeuralBasic::Network CreateNetwork()
 {
 	std::vector<size_t> networkSize;
 	networkSize.push_back(2);//inputs count
-	networkSize.push_back(3);//neurons count in layer 1
+	networkSize.push_back(2);//neurons count in layer 1
 	networkSize.push_back(1);//neurons count in layer 2 and and outputs count
 	NeuralBasic::Network network(networkSize);
 	return network;
@@ -52,40 +52,18 @@ private:
 	std::vector<double> m_desired;
 };
 
-const double input1[]={-0.8, -0.8, 1.0};
-const double desired1[]={-0.8, 0.8, };
-
-const double input2[]={-0.8, 0.8, 1.0};
-const double desired2[]={0.8, -0.8};
-
-const double input3[]={0.8, -0.8, 1.0};
-const double desired3[]={0.8, -0.8, };
-
-const double input4[]={0.8, 0.8, 1.0};
-const double desired4[]={-0.8, 0.8, };
-
-//const double input5[]={0.9, 0.8, 0.1, -0.9, 1.0};
-//const double desired5[]={-0.9, 0.7, -0.91, 0.73};
-
 const double inputs[][5]={
-	{-0.8, -0.8, 1.0}
-	, {0.8, -0.8, 1.0}
-	, {-0.8, 0.8, 1.0}
-	, {0.8, 0.8, 1.0}
+	 {1.0, 0.0, 1.0}
+	, {0.0, 0.0, 1.0}
+	, {0.0, 1.0, 1.0}
+	, {1.0, 1.0, 1.0}
 };
 
-//const double desireds[][4]={
-//	  {-0.8, 0.8 }
-//	, {0.8, -0.8 }
-//	, {0.8, -0.8 }
-//	, {-0.8, 0.8 }
-//};
-
 const double desireds[][4]={
-	  {-0.0}
-	, {0.8  }
-	, {0.8  }
-	, {-0.0}
+	  {1.0}
+	, {0.0}
+	, {1.0}
+	, {0.0}
 };
 
 
@@ -138,18 +116,21 @@ void TrainNetwork(NeuralBasic::Network& network)
 		std::for_each(trainData.begin(), trainData.end() 
 			, [&network, &roundError](const Data& data)
 		{
-			const std::vector<double>& output = network.Work(data.GetInput());
+			const std::vector<double>& input = data.GetInput();
+			const std::vector<double>& desired = data.GetDesired();
+			const std::vector<double>& output = network.Work(input);
 			std::vector<double> error;
 			//error = desired-output
-			std::transform(data.GetDesired().begin(), data.GetDesired().end()
+			std::transform(desired.begin(), desired.end()
 				, output.begin()
 				, std::back_inserter(error)
 				, std::minus<double>());
-			network.Train(data.GetInput(), error);
+			network.Train(input, error);
 			roundError = std::max(roundError, GetMaxAbs(error));
 		}
 		);
-		std::cout << "Round error: " << roundError << std::endl;
+		if(idx%100==0)
+			std::cout << "Round error("<<idx<< ": "<< roundError << std::endl;
 	}
 }
 

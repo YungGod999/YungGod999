@@ -10,11 +10,11 @@ namespace NeuralBasic
 		ForEach3It(inputs.begin(), inputs.end()
 			, weights.begin()
 			, deltas.begin()
-			, [=](const double input, double& delta, double& weight)
+			, [=](const double input, double& weight, double& delta)
 		{
-			const double learningRate = 0.001;
+			const double learningRate = 0.5;
 			const double gradient = input * learningError;
-			const double newDeltaWeight = gradient * learningRate + delta*0.6;
+			const double newDeltaWeight = gradient * learningRate + delta*0.0;
 
 			weight += newDeltaWeight;
 			delta = newDeltaWeight;

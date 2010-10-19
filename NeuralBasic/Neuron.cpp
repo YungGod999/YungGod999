@@ -20,6 +20,7 @@ namespace NeuralBasic
 			return WeightInitializer::Generate();
 		}
 		);
+		backPropagation.init(m_weights.size());
 	}
 
 	Neuron::~Neuron(void)
@@ -38,13 +39,13 @@ namespace NeuralBasic
 	{
 		const double learningError =  backPropError * HyperbolicTangent::Derivative(output);
 		CalculateError(learningError, layerError);
-		BackPropagation::Train(learningError, inputs, m_weights);
+		backPropagation.Train(learningError, inputs, m_weights);
 	}
 
 	void Neuron::TrainFirstLayer(const Doubles& inputs, const double output, const double backPropError)
 	{
 		const double learningError =  backPropError * HyperbolicTangent::Derivative(output);
-		BackPropagation::Train(learningError, inputs, m_weights);
+		backPropagation.Train(learningError, inputs, m_weights);
 	}
 
 	void Neuron::CalculateError(const double learningError, Doubles& error) const

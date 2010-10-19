@@ -129,8 +129,8 @@ void TrainNetwork(NeuralBasic::Network& network)
 			roundError = std::max(roundError, GetMaxAbs(error));
 		}
 		);
-		if(idx%10==0)
-			std::cout << "Round error("<<idx<< ": "<< roundError << std::endl;
+		if(idx%100==0)
+			std::cout << "Round error("<<idx<< "): "<< roundError << std::endl;
 	}
 }
 

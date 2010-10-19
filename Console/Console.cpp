@@ -53,7 +53,7 @@ private:
 };
 
 const double inputs[][5]={
-	, {0.0, 0.0, 1.0}
+	  {0.0, 0.0, 1.0}
 	, {1.0, 0.0, 1.0}
 	, {0.0, 1.0, 1.0}
 	, {1.0, 1.0, 1.0}
@@ -129,7 +129,7 @@ void TrainNetwork(NeuralBasic::Network& network)
 			roundError = std::max(roundError, GetMaxAbs(error));
 		}
 		);
-		if(idx%100==0)
+		if(idx%10==0)
 			std::cout << "Round error("<<idx<< ": "<< roundError << std::endl;
 	}
 }
